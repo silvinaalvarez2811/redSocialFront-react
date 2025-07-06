@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Nunito&family=Ubuntu&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --fuente-principal: "Nunito", sans-serif;
+  --fuente-secundaria: "Montserrat", sans-serif;
+  --fuente-extra: "Lato", sans-serif;
+  --fuente-ubuntu: "Ubuntu", sans-serif;
+
+  /* Colores principales */
+  --color-gris-oscuro-1: #5d5c5c;
+  --color-gris-oscuro-2: #2f2f2f;
+  --color-gris-claro: #e0e0e0;
+
+  /* Colores secundarios*/
+  --color-anaranjado-1: #d95d39;
+  --color-rojo-2: #c94e4e;
+
+  /* Uso general */
+  --color-fondo: var(--color-gris-claro);
+  --color-fondo-2: var(--color-gris-oscuro-1);
+  --color-fondo-3: var(--color-gris-oscuro-2);
+  --color-destacado: var(--color-anaranjado-1);
+  --color-destacado2: var(--color-rojo-2);
+}
+
+body,
+html {
+  font-family: "Montserrat", "Lato", "Nunito", "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-texto-secundario);
+}
+
+a {
+  color: var(--color-destacado);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-alerta);
+  text-decoration: none;
+}
+
+button.primary {
+  background-color: var(--color-destacado);
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+button.primary:hover {
+  background-color: var(--color-alerta);
+}
+
+/*color de todos los dots del carrousel*/
+.slick-dots li button:before {
+  color: #e0e0e0 !important;
+  opacity: 1;
+}
+
+/*color del boton activo*/
+.slick-dots li.slick-active button:before {
+  color: white !important;
+}

@@ -1,0 +1,40 @@
+.about {
+  max-width: 1024px;
+  background-color: white;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2rem;
+  padding-top: 10rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  padding: auto;
+  margin: 1rem;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.logo {
+  width: auto;
+  height: 200px;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}

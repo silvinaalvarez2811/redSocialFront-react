@@ -1,0 +1,107 @@
+.postCard {
+  max-width: 600px;
+  margin: 1rem auto; /* centrado horizontal y un poco de margen vertical */
+  padding: 1rem;
+  padding: 1rem;
+  background: #1a1a1a;
+  border-radius: 4%;
+}
+.usuarioCard {
+  display: flex;
+  color: var(--color-gris-claro);
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 0.3rem;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.cardImage {
+  width: 100%;
+  max-height: 400px;
+  aspect-ratio: 3 /4; /*proporcion de la imagen*/
+  overflow: hidden;
+}
+.cardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.cardBody {
+  padding: 1rem;
+}
+
+.cardTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #e0e0e0;
+}
+
+.cardTags {
+  margin-bottom: 0.5rem;
+}
+
+.cardText {
+  display: inline-block;
+  color: #e0e0e0;
+  padding: 0.2rem 0.5rem;
+  margin-right: 0.3rem;
+  border-radius: 5px;
+  font-size: 1.2rem;
+}
+
+.cardComments {
+  font-size: 0.9rem;
+  /*margin-bottom: 0.5rem;*/
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  color: #e0e0e0;
+  font-size: 2rem;
+  font-family: "Lato";
+}
+
+.listComments {
+  list-style: none;
+  padding: 0;
+  margin: 0rem;
+}
+
+.comment {
+  background-color: #eee9e9;
+  padding: 0.5rem;
+  width: 100%;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.navigate {
+  display: block;
+  width: 100%;
+  margin-top: 0.7rem;
+  padding: 0.4rem 0.8rem;
+  background-color: #d95d39;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  text-align: center;
+}
+
+.navigate:hover {
+  background-color: #b94b2f;
+}

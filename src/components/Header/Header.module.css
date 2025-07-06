@@ -1,0 +1,116 @@
+.header {
+  background-color: #1a1a1a;
+  padding: 0.625rem 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+}
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.logoImg {
+  height: 40px;
+  background-color: white;
+  border-radius: 35%;
+  padding: 4px;
+}
+.logoText {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-gris-claro);
+}
+.logoNet {
+  font-size: 1.3rem;
+  color: var(--color-rojo-2);
+}
+/*contenedor de links centrales*/
+.navCenter {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+}
+/* Links individuales */
+.navLink {
+  display: flex;
+  align-items: center;
+  color: var(--color-gris-claro);
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.navLink:hover {
+  transform: scale(1.1);
+  color: white;
+}
+.active {
+  font-weight: bold;
+  color: #d95d39;
+}
+.navText {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+}
+
+.logoutButton:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+  .hideOnMobile {
+    display: none !important;
+  }
+
+  .navContainer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .navCenter {
+    flex: 1;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .navText {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .logoText {
+    font-size: 1rem;
+  }
+
+  .logoImg {
+    height: 30px;
+  }
+
+  .header {
+    padding: 0.5rem;
+  }
+}
