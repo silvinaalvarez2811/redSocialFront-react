@@ -12,8 +12,33 @@ const Home = () => {
   const { user } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    fetch("http://localhost:5000/users")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Usuarios recibidos:", data);
+        setUsers(data);
+      })
+      .catch((err) => console.error("Error al conectar con el backend:", err));
+  }, []);
+
+  return (
+    <div>
+      <h1>Usuarios</h1>
+      <ul>
+        {users.map((u) => (
+          <li key={u._id}>
+            {u.userName} - {u.email}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+/*useEffect(() => {
     const obtenerPosts = async () => {
       try {
         const respPost = await fetch("http://localhost:3001/posts");
@@ -66,5 +91,5 @@ const Home = () => {
     </div>
   );
 };
-
+*/
 export default Home;
