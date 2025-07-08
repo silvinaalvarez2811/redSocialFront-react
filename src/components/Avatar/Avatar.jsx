@@ -17,7 +17,7 @@ const Avatar = ({ user, extraClass = "" }) => {
   //se usa con fondo de color y fondo blanco extraclass
   return (
     <div className={`${styles.avatar} ${styles[extraClass]}`}>
-      {getInitials(user.nickName)}
+      {getInitials(user.userName)}
     </div>
   );
 };

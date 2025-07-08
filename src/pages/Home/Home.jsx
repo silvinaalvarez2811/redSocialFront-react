@@ -5,9 +5,7 @@ import { UserContext } from "../../context/UserContext";
 import Post from "../../components/Post/Post";
 import { Link } from "react-router-dom";
 import { MdOutlinePostAdd } from "react-icons/md";
-import Banner from "../../components/Banner/Banner";
-import AsideIzq from "../../components/Aside/AsideIzq";
-import AsideDer from "../../components/Aside/AsideDer";
+
 const Home = () => {
   const { user } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
@@ -15,7 +13,7 @@ const Home = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/users")
+    fetch("/users")
       .then((res) => res.json())
       .then((data) => {
         console.log("Usuarios recibidos:", data);

@@ -1,12 +1,11 @@
 import { useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/antisocial-logo.png";
-import background from "../../assets/fondo-register2.jpg";
+
 import style from "../Register/Register.module.css";
 
 const Register = () => {
-  const [nickName, setNickName] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const { login } = useContext(UserContext);
@@ -18,21 +17,21 @@ const Register = () => {
 
     try {
       // get de users - trae todos
-      const getUsers = await fetch("http://localhost:3001/users");
+      const getUsers = await fetch("/users");
       const usuarios = await getUsers.json();
       //se busca si hay alguno igual al que se quiere registrar
-      const existsNickName = usuarios.find(
-        (user) => user.nickName === nickName
+      const existsUserName = usuarios.find(
+        (user) => user.userName === userName
       );
-      if (existsNickName) {
+      if (existsUserName) {
         setError("Es nombre de ususario ya existe.Elegí otro");
         return;
       }
       //si no existe, se registra
-      const response = await fetch("http://localhost:3001/users", {
+      const response = await fetch("/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nickName, email }),
+        body: JSON.stringify({ userName, email }),
       });
 
       if (!response.ok) {
@@ -44,7 +43,7 @@ const Register = () => {
       const nuevoUsuario = await response.json();
 
       login(nuevoUsuario); // guardo usuario en contexto y localStorage
-      alert(`Te has registrado correctamente, ${nuevoUsuario.nickName}`);
+      alert(`Te has registrado correctamente, ${nuevoUsuario.userName}`);
       navigate("/home");
     } catch (error) {
       console.error("Error en registro:", error);
@@ -53,32 +52,17 @@ const Register = () => {
   };
 
   return (
-    <div
-      className={style["body-register"]}
-      style={{ backgroundImage: `url(${background})` }}
-    >
+    <div className={style["body-register"]}>
       <div className="min-h-screen flex items-center justify-center text-white px-4">
         <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow-lg">
-          <div className={style["conteiner-logo"]}>
-            <div
-              className="bg-white rounded-2xl p-2 flex justify-center 
-            items-center w-24 h-24 mx-auto mb-4"
-            >
-              <img
-                src={logo}
-                alt="Logo"
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </div>
           <h2 className="text-2xl font-bold mb-6 text-center">Registro</h2>
           <p>Registrate para ver fotos de tus amigos</p>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <input
               type="text"
               placeholder="Nombre de usuario"
-              value={nickName}
-              onChange={(e) => setNickName(e.target.value)}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
               required
               className="p-3 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

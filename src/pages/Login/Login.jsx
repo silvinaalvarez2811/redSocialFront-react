@@ -1,14 +1,9 @@
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
-import carusel1 from "../../assets/carusel1.jpg";
-import carusel2 from "../../assets/carusel2.jpg";
-import carusel3 from "../../assets/carusel3.jpg";
 import styles from "./Login.module.css";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
-
-const images = [carusel1, carusel2, carusel3];
 
 const Login = () => {
   const [userName, setuserName] = useState("");
@@ -16,16 +11,8 @@ const Login = () => {
   const [error, setError] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
-
   const { login } = useContext(UserContext);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleSubmit = async (evento) => {
     evento.preventDefault();
@@ -55,20 +42,6 @@ const Login = () => {
 
   return (
     <div className={styles["login-container"]}>
-      {/* Carrusel de fondo */}
-      <div className={styles["carousel-wrapper"]}>
-        {images.map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            alt={`slide-${index}`}
-            className={`${styles["carousel-img"]} ${
-              index === currentIndex ? styles["active"] : ""
-            }`}
-          />
-        ))}
-      </div>
-
       {/* Formulario */}
       <div className={styles["login-overlay"]}>
         <div className={styles["login-form"]}>

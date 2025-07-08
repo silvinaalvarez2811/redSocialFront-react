@@ -10,17 +10,10 @@ function Footer() {
     <footer className={style.footer}>
       <div className="container">
         <div className="footer-top">
-          <h4>UnaHur Anti-Social Net</h4>
+          <h4>Red Social</h4>
         </div>
         <div className="footer-links">
           <NavLink to="/about-us">Sobre Nosotros</NavLink>
-          <a href="https://github.com/silvinaalvarez2811" target="_blank">
-            Git Silvina
-          </a>
-          <a href="https://github.com/elicontti" target="_blank">
-            {" "}
-            Git Elizabeth
-          </a>
         </div>
       </div>
     </footer>
