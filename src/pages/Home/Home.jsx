@@ -12,7 +12,7 @@ const Home = () => {
   const [cargando, setCargando] = useState(true);
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     fetch("/users")
       .then((res) => res.json())
       .then((data) => {
@@ -34,12 +34,12 @@ const Home = () => {
       </ul>
     </div>
   );
-};
+};*/
 
-/*useEffect(() => {
+  useEffect(() => {
     const obtenerPosts = async () => {
       try {
-        const respPost = await fetch("http://localhost:3001/posts");
+        const respPost = await fetch("/posts");
         const dataPost = await respPost.json();
         setPosts(dataPost);
         setCargando(false);
@@ -54,10 +54,6 @@ const Home = () => {
   return (
     <div className={styles.page}>
       <div className={styles.layout}>
-        <aside className={styles.asideLeft}>
-          <AsideIzq />
-        </aside>
-
         <section className={styles.mainContent}>
           <div className={styles.createPost}>
             <Link to="/newPost" className={styles.navigate}>
@@ -81,13 +77,9 @@ const Home = () => {
             </div>
           )}
         </section>
-
-        <aside className={styles.asideRight}>
-          <AsideDer />
-        </aside>
       </div>
     </div>
   );
 };
-*/
+
 export default Home;

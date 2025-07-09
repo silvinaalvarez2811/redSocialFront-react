@@ -9,102 +9,55 @@ import { FaCheckCircle } from "react-icons/fa";
 const NewPost = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-
   const [description, setDescription] = useState("");
-  const [imageUrls, setImageUrls] = useState([]);
+  const [error, setError] = useState("");
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [error, setError] = useState("");
-  const [nuevaImagen, setNuevaImagen] = useState("");
 
   useEffect(() => {
-    const obtenerTags = async () => {
+    const fetchTags = async () => {
       try {
-        const respuesta = await fetch("http://localhost:3001/tags");
-        const data = await respuesta.json();
-        setTags(data);
+        const respTags = await fetch("/tags");
+        if (!respTags.ok) {
+          throw new Error("Error al cargar los tags disponibles");
+          return;
+        }
+        const tagsData = await respTags.json();
+        setTags(tagsData);
       } catch (error) {
-        console.error("Error al traer tags:", error);
+        console.error(error.message);
       }
     };
-    obtenerTags();
+    fetchTags();
   }, []);
 
-  const handleSubmit = async (evento) => {
-    evento.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     if (!description.trim()) {
       setError("La descripción es obligatoria");
       return;
     }
 
-    // Limpio la URL nueva, y preparo la lista final de imágenes
-    const urlLimpia = nuevaImagen.trim();
-    let imagenesFinales = [...imageUrls];
-
-    // Si la URL nueva no está vacía y no está ya en el array, la agrego
-    if (urlLimpia !== "" && !imagenesFinales.includes(urlLimpia)) {
-      imagenesFinales.push(urlLimpia);
-    }
-
-    // Limpio duplicados y URLs vacías
-    const imagenesValidas = Array.from(
-      new Set(imagenesFinales.filter(Boolean))
-    );
-
     try {
-      // Creo el post primero
-      const resPost = await fetch("http://localhost:3001/posts", {
+      const response = await fetch("/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           description,
-          userId: user.id,
-          tagIds: selectedTags,
+          userId: user._id,
+          tags: selectedTags,
         }),
       });
-
-      const nuevoPost = await resPost.json();
-
-      // Envío cada imagen, una por una, pero sin repetir
-      for (const url of imagenesValidas) {
-        await fetch("http://localhost:3001/postimages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            url,
-            postId: nuevoPost.id,
-          }),
-        });
+      if (!response.ok) {
+        throw new Error("Error al crear la publicación");
+        return;
       }
-
+      const dataPost = await response.json();
       navigate("/home");
     } catch (error) {
-      console.error("Error al crear el post:", error);
-      setError("Error al crear la publicación");
+      console.error(error.message);
     }
-  };
-
-  const handleTagChange = (e) => {
-    const tagId = parseInt(e.target.value);
-    if (e.target.checked) {
-      setSelectedTags([...selectedTags, tagId]);
-    } else {
-      setSelectedTags(selectedTags.filter((id) => id !== tagId));
-    }
-  };
-
-  const agregarImagen = () => {
-    const urlLimpia = nuevaImagen.trim();
-    if (urlLimpia !== "" && !imageUrls.includes(urlLimpia)) {
-      setImageUrls([...imageUrls, urlLimpia]);
-      setNuevaImagen("");
-    }
-  };
-
-  const eliminarImagen = (index) => {
-    const nuevas = imageUrls.filter((_, i) => i !== index);
-    setImageUrls(nuevas);
   };
 
   return (
@@ -123,68 +76,36 @@ const NewPost = () => {
               className={styles.textarea}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              placeholder="Escribi tu publicación..."
               required
             ></textarea>
           </div>
 
-          {/* Agregar imágenes */}
-          <div className={styles.formGroup}>
-            <div className={styles.addImages}>
-              <label className={styles.label}>
-                <IoImagesOutline size={26} />
-                Agregá tu foto
-              </label>
-            </div>
-            <div className={styles.imageInputWrapper}>
-              <input
-                type="text"
-                value={nuevaImagen}
-                onChange={(e) => setNuevaImagen(e.target.value)}
-                className={styles.input}
-                placeholder="ej: https://miweb.com/imagen.jpg"
-              />
-              <button
-                type="button"
-                className={styles.addButton}
-                onClick={agregarImagen}
+          <div>
+            {tags.map((tag) => (
+              <label
+                key={tag._id}
+                style={{ marginRight: "10px", color: "white" }}
               >
-                Confirmar
-              </button>
-            </div>
+                <input
+                  type="checkbox"
+                  value={tag._id}
+                  onChange={(e) => {
+                    //agrega el tag al array
+                    if (e.target.checked) {
+                      setSelectedTags([...selectedTags, tag._id]);
+                    } else {
+                      //elimina el tag del array
+                      setSelectedTags(
+                        selectedTags.filter((id) => id !== tag._id)
+                      );
+                    }
+                  }}
+                />
+                #{tag.name}
+              </label>
+            ))}
           </div>
-
-          {imageUrls.map((imagen, index) => (
-            <div className={styles.imagenesGuardadas} key={imagen + index}>
-              <FaCheckCircle size={30} />
-              {"  "}
-              <span>{imagen}</span>
-            </div>
-          ))}
-
-          {/* Etiquetas */}
-          <div className={styles.formGroup}>
-            <div className={styles.tagsWrapper}>
-              {tags.map((tag) => (
-                <div key={tag.id} className={styles.checkboxWrapper}>
-                  <input
-                    type="checkbox"
-                    value={tag.id}
-                    onChange={handleTagChange}
-                    className={styles.checkbox}
-                    id={`tag-${tag.id}`}
-                  />
-                  <label
-                    className={styles.checkboxLabel}
-                    htmlFor={`tag-${tag.id}`}
-                  >
-                    #{tag.name}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Botón de enviar */}
           <button type="submit" className={styles.submitButton}>
             Publicar
           </button>
