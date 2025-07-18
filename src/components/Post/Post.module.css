@@ -79,6 +79,15 @@
   margin: 0rem;
 }
 
+.cardLooking {
+  background-color: #eee9e9;
+  padding: 0.5rem;
+  width: 100%;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+}
 .comment {
   background-color: #eee9e9;
   padding: 0.5rem;

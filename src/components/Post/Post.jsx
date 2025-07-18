@@ -115,19 +115,20 @@ const Post = ({ post }) => {
         </p>
         <h5 className={styles.cardTitle}>{postComplete.description}</h5>
 
-        {postComplete.tags?.length > 0 && (
-          <div className={styles.cardTags}>
-            {postComplete.tags.map((tag) => (
-              <span
-                key={tag._id}
-                className={styles.cardText}
-                style={{ color: "white" }}
-              >
-                #{tag.name}
-              </span>
-            ))}
-          </div>
-        )}
+        <div className={styles.cardLooking}>
+          <p>
+            <spam
+              style={{
+                fontWeight: "bold",
+                marginRight: "10px",
+                fontFamily: "Lato",
+              }}
+            >
+              Estoy buscando:
+            </spam>
+            {postComplete.lookingFor}
+          </p>
+        </div>
 
         {postComplete.comments?.length > 0 && (
           <div>
