@@ -114,3 +114,18 @@
 .navigate:hover {
   background-color: #b94b2f;
 }
+.exchangeButton {
+  background-color: #d95d39;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+.reservedText {
+  color: gray;
+  font-weight: bold;
+  margin-top: 10px;
+}

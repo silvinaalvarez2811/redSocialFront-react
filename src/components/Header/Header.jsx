@@ -37,7 +37,14 @@ const Header = () => {
           >
             Perfil
           </NavLink>
-
+          <NavLink
+            to="/history"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            Historial
+          </NavLink>
           <NavLink
             to="/about-us"
             className={({ isActive }) =>

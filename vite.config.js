@@ -8,7 +8,6 @@ export default defineConfig({
       "/users": "http://localhost:5000",
       "/posts": "http://localhost:5000",
       "/comments": "http://localhost:5000",
-      "/tags": "http://localhost:5000",
     },
   },
 });

@@ -1,53 +1,31 @@
 import React from "react";
 import styles from "./Home.module.css";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../context/UserContext";
+import { useEffect, useState } from "react";
 import Post from "../../components/Post/Post";
 import { Link } from "react-router-dom";
 import { MdOutlinePostAdd } from "react-icons/md";
 
 const Home = () => {
-  const { user } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [cargando, setCargando] = useState(true);
-  const [users, setUsers] = useState([]);
 
-  /*useEffect(() => {
-    fetch("/users")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Usuarios recibidos:", data);
-        setUsers(data);
-      })
-      .catch((err) => console.error("Error al conectar con el backend:", err));
-  }, []);
+  const obtenerPosts = async () => {
+    try {
+      const respPost = await fetch("/posts");
+      const dataPost = await respPost.json();
 
-  return (
-    <div>
-      <h1>Usuarios</h1>
-      <ul>
-        {users.map((u) => (
-          <li key={u._id}>
-            {u.userName} - {u.email}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};*/
+      const filteredPost = await dataPost.filter(
+        (post) => post.status !== "completed"
+      );
+      setPosts(filteredPost);
+    } catch (error) {
+      console.error("Error al obtener los posts:", error);
+    } finally {
+      setCargando(false);
+    }
+  };
 
   useEffect(() => {
-    const obtenerPosts = async () => {
-      try {
-        const respPost = await fetch("/posts");
-        const dataPost = await respPost.json();
-        setPosts(dataPost);
-        setCargando(false);
-      } catch (error) {
-        console.error("Error al obtener los posts:", error);
-        setCargando(false);
-      }
-    };
     obtenerPosts();
   }, []);
 
@@ -57,7 +35,7 @@ const Home = () => {
         <section className={styles.mainContent}>
           <div className={styles.createPost}>
             <Link to="/newPost" className={styles.navigate}>
-              <MdOutlinePostAdd size={25} /> ¿Qué estás pensando?
+              <MdOutlinePostAdd size={25} /> ¿Qué querés intercambiar?
             </Link>
           </div>
 
@@ -71,7 +49,7 @@ const Home = () => {
             <div className={styles.row}>
               {posts.map((post) => (
                 <div key={post.id} className={styles.rowPost}>
-                  <Post post={post} />
+                  <Post post={post} onExchangeSuccess={obtenerPosts} />
                 </div>
               ))}
             </div>

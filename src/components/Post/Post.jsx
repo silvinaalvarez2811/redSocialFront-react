@@ -2,19 +2,19 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import styles from "./Post.module.css";
 import Avatar from "../Avatar/Avatar";
 import { FaCommentDots } from "react-icons/fa";
 import { UserContext } from "../../context/UserContext";
 
-const Post = ({ post }) => {
+const Post = ({ post, onExchangeSuccess }) => {
   const { user } = useContext(UserContext);
   const [postComplete, setPostComplete] = useState(null);
   const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [error, setError] = useState("");
   const [showCommentForm, setShowCommentForm] = useState(false);
+
   useEffect(() => {
     const fetchPostComplete = async () => {
       try {
@@ -74,6 +74,31 @@ const Post = ({ post }) => {
     }
   };
 
+  const handleRequestExchange = async () => {
+    try {
+      const response = await fetch("/posts/requestExchange", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          postId: post._id,
+          requesterId: user._id,
+        }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(errorData.message || "error en el intercambio");
+        return;
+      }
+      alert("¡Intercambio solicitado!");
+      console.log("Status del post:", postComplete.status);
+      if (typeof onExchangeSuccess === "function") {
+        onExchangeSuccess();
+      }
+    } catch (error) {
+      console.error("Error al solicitar el intercambio:", error);
+    }
+  };
+
   if (loading || !postComplete) return <p>Cargando post...</p>;
 
   return (
@@ -117,7 +142,7 @@ const Post = ({ post }) => {
 
         <div className={styles.cardLooking}>
           <p>
-            <spam
+            <span
               style={{
                 fontWeight: "bold",
                 marginRight: "10px",
@@ -125,7 +150,7 @@ const Post = ({ post }) => {
               }}
             >
               Estoy buscando:
-            </spam>
+            </span>
             {postComplete.lookingFor}
           </p>
         </div>
@@ -206,6 +231,25 @@ const Post = ({ post }) => {
             </form>
           )}
         </div>
+      </div>
+      {/* Botón de intercambio */}
+      <div className={styles.exchangeSection}>
+        {postComplete.status === "available" ? (
+          <button
+            onClick={handleRequestExchange}
+            className={styles.exchangeButton}
+          >
+            IINTERCAMBIAR
+          </button>
+        ) : postComplete.status === "engaged" ? (
+          <button
+            disabled
+            className={styles.exchangeButton}
+            style={{ cursor: "not-allowed", opacity: 0.6 }}
+          >
+            RESERVADO
+          </button>
+        ) : null}
       </div>
     </div>
   );

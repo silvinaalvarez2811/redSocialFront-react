@@ -6,6 +6,7 @@ import Profile from "./pages/Profile/Profile";
 import NewPost from "./pages/NewPost/NewPost";
 import RutaProtegida from "./components/RutaProtegida";
 import Header from "./components/Header/Header";
+import UserHistory from "./pages/UserHistory/UserHistory";
 import Footer from "./components/Footer/Footer";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import styles from "./App.module.css";
@@ -59,6 +60,15 @@ function App() {
               </RutaProtegida>
             }
           />
+          <Route
+            path="/history"
+            element={
+              <RutaProtegida>
+                <UserHistory />
+              </RutaProtegida>
+            }
+          />
+
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
