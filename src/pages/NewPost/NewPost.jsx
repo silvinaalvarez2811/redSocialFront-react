@@ -1,35 +1,27 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import styles from "./NewPost.module.css";
 import { IoImagesOutline } from "react-icons/io5";
 import Avatar from "../../components/Avatar/Avatar";
-import { FaCheckCircle } from "react-icons/fa";
 
 const NewPost = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
+
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
-  const [tags, setTags] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [lookingFor, setLookingFor] = useState("");
+  const [image, setImage] = useState([]);
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const respTags = await fetch("/tags");
-        if (!respTags.ok) {
-          throw new Error("Error al cargar los tags disponibles");
-          return;
-        }
-        const tagsData = await respTags.json();
-        setTags(tagsData);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-    fetchTags();
-  }, []);
+  if (!user) {
+    return <p>Cargando usuario...</p>;
+  }
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImage((prev) => [...prev, ...files]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,25 +30,35 @@ const NewPost = () => {
       setError("La descripción es obligatoria");
       return;
     }
+    if (!lookingFor.trim()) {
+      setError("Describir lo que buscas es obligatorio");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("description", description);
+    formData.append("lookingFor", lookingFor);
+    formData.append("userId", user._id);
+    formData.append("status", "available");
+
+    image.forEach((file) => {
+      formData.append("images", file);
+    });
 
     try {
       const response = await fetch("/posts", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          description,
-          userId: user._id,
-          tags: selectedTags,
-        }),
+        body: formData,
       });
+
       if (!response.ok) {
         throw new Error("Error al crear la publicación");
-        return;
       }
       const dataPost = await response.json();
       navigate("/home");
     } catch (error) {
       console.error(error.message);
+      setError("Error al crear la publicación");
     }
   };
 
@@ -65,47 +67,60 @@ const NewPost = () => {
       <div className={styles.container}>
         <div className={styles.title}>
           <Avatar user={user} extraClass="avatarPost" />
-          <h2 className={styles.title}>¿Qué estás pensando?</h2>
+          <h2 className={styles.title}>¿Qué querés intecambiar?</h2>
         </div>
         {error && <p className={styles.error}>{error}</p>}
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          {/* Descripción */}
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className={styles.formGroup}>
             <textarea
               className={styles.textarea}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Escribi tu publicación..."
+              placeholder="Describi tu prenda..."
               required
-            ></textarea>
+            />
           </div>
 
-          <div>
-            {tags.map((tag) => (
-              <label
-                key={tag._id}
-                style={{ marginRight: "10px", color: "white" }}
-              >
-                <input
-                  type="checkbox"
-                  value={tag._id}
-                  onChange={(e) => {
-                    //agrega el tag al array
-                    if (e.target.checked) {
-                      setSelectedTags([...selectedTags, tag._id]);
-                    } else {
-                      //elimina el tag del array
-                      setSelectedTags(
-                        selectedTags.filter((id) => id !== tag._id)
-                      );
-                    }
-                  }}
-                />
-                #{tag.name}
-              </label>
-            ))}
+          <div className={styles.formGroup}>
+            <textarea
+              className={styles.textarea}
+              value={lookingFor}
+              onChange={(e) => setLookingFor(e.target.value)}
+              placeholder="Contanos lo que estás buscando..."
+              required
+            />
           </div>
+
+          <div className={styles.formGroup}>
+            <div className={styles.addImages}>
+              <label className={styles.label}>
+                <IoImagesOutline size={26} />
+                Agregá tu foto
+              </label>
+            </div>
+
+            <div className={styles.imageInputWrapper}>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                className={styles.imageInput}
+              />
+            </div>
+
+            {image.length > 0 && (
+              <div>
+                {image.map((file, index) => (
+                  <p key={index} className={styles.imageName}>
+                    {file.name}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+
           <button type="submit" className={styles.submitButton}>
             Publicar
           </button>
