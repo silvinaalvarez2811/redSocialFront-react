@@ -45,8 +45,8 @@ const NewPost = () => {
       formData.append("images", file);
     });
 
-    try {
-      const response = await fetch("/posts", {
+    try {   
+      const response = await fetch("http://localhost:3000/posts", {
         method: "POST",
         body: formData,
       });

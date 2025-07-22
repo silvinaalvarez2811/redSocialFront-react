@@ -6,6 +6,7 @@ import styles from "./Post.module.css";
 import Avatar from "../Avatar/Avatar";
 import { FaCommentDots } from "react-icons/fa";
 import { UserContext } from "../../context/UserContext";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Post = ({ post, onExchangeSuccess }) => {
   const { user } = useContext(UserContext);
@@ -18,7 +19,7 @@ const Post = ({ post, onExchangeSuccess }) => {
   useEffect(() => {
     const fetchPostComplete = async () => {
       try {
-        const res = await fetch(`/posts/full/${post._id}`);
+        const res = await fetch(`http://localhost:3000/posts/full/${post._id}`);
 
         if (!res.ok) {
           throw new Error("Error al cargar el post completo");
@@ -39,7 +40,7 @@ const Post = ({ post, onExchangeSuccess }) => {
     if (!newComment.trim()) return;
 
     try {
-      const response = await fetch("/comments", {
+      const response = await fetch("http://localhost:3000/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -124,7 +125,7 @@ const Post = ({ post, onExchangeSuccess }) => {
           {postComplete.images.map((imagen, index) => (
             <div key={index} className={styles.cardImage}>
               <img
-                src={imagen.imageUrl}
+                src={BACKEND_URL + imagen.imageUrl}
                 className="card-img-top mb-2"
                 alt={`Imagen ${index + 1}`}
               />
@@ -239,7 +240,7 @@ const Post = ({ post, onExchangeSuccess }) => {
             onClick={handleRequestExchange}
             className={styles.exchangeButton}
           >
-            IINTERCAMBIAR
+            INTERCAMBIAR
           </button>
         ) : postComplete.status === "engaged" ? (
           <button
