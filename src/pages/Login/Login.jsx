@@ -16,22 +16,26 @@ const Login = () => {
 
   const handleSubmit = async (evento) => {
     evento.preventDefault();
+    setError("");
     try {
-      const response = await fetch("/users");
-      const usuarios = await response.json();
-      const usuarioEncontrado = usuarios.find((u) => u.userName === userName);
+      const responseUser = await fetch(`http://localhost:3000/users/user?username=${userName}`)
+      const usuarioEncontrado = await responseUser.json()
+      const validation = await fetch(`http://localhost:3000/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userName, password }),
+      });
 
-      if (!usuarioEncontrado) {
+      if (!responseUser.ok) {
         setError("El usuario no existe");
         return;
       }
 
-      if (password !== "123456") {
+      if (!validation.ok) {
         setError("Contraseña incorrecta");
         return;
       }
-
-      setError("");
+      
       login(usuarioEncontrado);
       navigate("/home");
     } catch (error) {

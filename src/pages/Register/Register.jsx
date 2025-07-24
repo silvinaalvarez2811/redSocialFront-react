@@ -1,12 +1,16 @@
 import { useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 import style from "../Register/Register.module.css";
 
 const Register = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [location, setLocation] = useState("");
   const [error, setError] = useState("");
   const { login } = useContext(UserContext);
   const navigate = useNavigate();
@@ -17,21 +21,23 @@ const Register = () => {
 
     try {
       // get de users - trae todos
-      const getUsers = await fetch("/users");
+      const getUsers = await fetch(`http://localhost:3000/users`);
       const usuarios = await getUsers.json();
       //se busca si hay alguno igual al que se quiere registrar
+      console.log(usuarios)
+      console.log(userName)
       const existsUserName = usuarios.find(
         (user) => user.userName === userName
       );
       if (existsUserName) {
-        setError("Es nombre de ususario ya existe.Elegí otro");
+        setError("Ese nombre de usuario ya existe. Elija otro");
         return;
       }
       //si no existe, se registra
-      const response = await fetch("/users", {
+      const response = await fetch(`http://localhost:3000/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userName, email }),
+        body: JSON.stringify({ userName, email, password, firstName, lastName, location }),
       });
 
       if (!response.ok) {
@@ -57,22 +63,68 @@ const Register = () => {
         <div className="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold mb-6 text-center">Registro</h2>
           <p>Registrate para ver fotos de tus amigos</p>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+          <label htmlFor="username">Nombre de usuario</label>
             <input
+              id="username"
               type="text"
               placeholder="Nombre de usuario"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               required
-              className="p-3 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+          <label htmlFor="password">Contraseña</label>
             <input
+              id="password"
+              type="text"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="p-3 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$"
+            />  
+          <label htmlFor="password" className="text-gray-400 text-sm mb-4">La contraseña debe contener por lo menos <b>8 caracteres</b> incluyendo un <b>número</b>, una <b>letra minúscula</b> y <b>mayúscula</b></label>
+          <label htmlFor="email">Email</label>
+            <input
+              id="email"
               type="email"
               placeholder="Correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="p-3 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          <label htmlFor="firstName">Nombre</label>
+            <input
+              id="firstName"
+              type="text"
+              placeholder="Nombre"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              className="p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          <label htmlFor="lastName">Apellido</label>
+            <input
+              id="lastName"
+              type="text"
+              placeholder="Apellido"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              className="p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          <label htmlFor="location">Ubicación</label>
+            <input
+              id="location"
+              type="text"
+              placeholder="Ubicación"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              required
+              className="p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
               type="submit"
