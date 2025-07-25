@@ -1,4 +1,5 @@
 import styles from "./Avatar.module.css";
+
 const Avatar = ({ user, extraClass = "" }) => {
   const getInitials = (name) => {
     if (!name) {
@@ -14,11 +15,19 @@ const Avatar = ({ user, extraClass = "" }) => {
       return (nombres[0][0] + nombres[1][0]).toUpperCase();
     }
   };
-  //se usa con fondo de color y fondo blanco extraclass
-  return (
-    <div className={`${styles.avatar} ${styles[extraClass]}`}>
-      {getInitials(user.userName)}
-    </div>
+
+  const initials = getInitials(user?.userName);
+
+  return user?.avatar ? (
+    <img
+      src={`http://localhost:3000${user.avatar}`}
+      alt="Avatar"
+      className={`${styles.avatarImage}`}
+      width={300}
+      height={300}
+    />
+  ) : (
+    <div className={`${styles.avatarInitials} ${styles[extraClass]}`}>{initials}</div>
   );
 };
 

@@ -1,4 +1,4 @@
-.avatar {
+.avatarInitials {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -13,4 +13,9 @@
 .avatarPost {
   background-color: white;
   color: #2f2f2f;
+}
+
+.avatarImage {
+  border-radius: 50%;
+  width: 40px;
 }
