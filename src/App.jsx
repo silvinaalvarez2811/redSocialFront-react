@@ -10,6 +10,7 @@ import UserHistory from "./pages/UserHistory/UserHistory";
 import Footer from "./components/Footer/Footer";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import styles from "./App.module.css";
+import EditProfile from './pages/EditProfile/EditProfile';
 
 function App() {
   const location = useLocation();
@@ -65,6 +66,14 @@ function App() {
             element={
               <RutaProtegida>
                 <UserHistory />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="edit-profile"
+            element={
+              <RutaProtegida>
+                <EditProfile />
               </RutaProtegida>
             }
           />

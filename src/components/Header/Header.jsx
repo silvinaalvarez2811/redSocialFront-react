@@ -53,6 +53,14 @@ const Header = () => {
           >
             Sobre Nosotros
           </NavLink>
+          <NavLink
+            to="/edit-profile"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            Configuration
+          </NavLink>
         </div>
         {user ? (
           <div className={styles.navText}>

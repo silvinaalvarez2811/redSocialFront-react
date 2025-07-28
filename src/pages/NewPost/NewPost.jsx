@@ -46,7 +46,7 @@ const NewPost = () => {
     });
 
     try {   
-      const response = await fetch("http://localhost:3000/posts", {
+      const response = await fetch("http://localhost:5000/posts", {
         method: "POST",
         body: formData,
       });

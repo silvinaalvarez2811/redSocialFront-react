@@ -21,11 +21,9 @@ const Register = () => {
 
     try {
       // get de users - trae todos
-      const getUsers = await fetch(`http://localhost:3000/users`);
+      const getUsers = await fetch(`http://localhost:5000/users`);
       const usuarios = await getUsers.json();
       //se busca si hay alguno igual al que se quiere registrar
-      console.log(usuarios)
-      console.log(userName)
       const existsUserName = usuarios.find(
         (user) => user.userName === userName
       );
@@ -34,7 +32,7 @@ const Register = () => {
         return;
       }
       //si no existe, se registra
-      const response = await fetch(`http://localhost:3000/users`, {
+      const response = await fetch(`http://localhost:5000/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userName, email, password, firstName, lastName, location }),

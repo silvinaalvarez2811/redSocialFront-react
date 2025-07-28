@@ -20,7 +20,7 @@ const Avatar = ({ user, extraClass = "" }) => {
 
   return user?.avatar ? (
     <img
-      src={`http://localhost:3000${user.avatar}`}
+      src={`http://localhost:5000${user.avatar}`}
       alt="Avatar"
       className={`${styles.avatarImage}`}
       width={300}

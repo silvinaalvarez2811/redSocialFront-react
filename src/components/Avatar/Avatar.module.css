@@ -19,3 +19,9 @@
   border-radius: 50%;
   width: 40px;
 }
+
+.editAvatar {
+  width: 80px;
+  height: 80px;
+  font-size: 1.4rem;
+}

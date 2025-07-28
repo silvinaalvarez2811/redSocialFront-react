@@ -6,7 +6,7 @@ import styles from "./Post.module.css";
 import Avatar from "../Avatar/Avatar";
 import { FaCommentDots } from "react-icons/fa";
 import { UserContext } from "../../context/UserContext";
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const Post = ({ post, onExchangeSuccess }) => {
   const { user } = useContext(UserContext);
@@ -19,7 +19,7 @@ const Post = ({ post, onExchangeSuccess }) => {
   useEffect(() => {
     const fetchPostComplete = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/posts/full/${post._id}`);
+        const res = await fetch(`http://localhost:5000/posts/full/${post._id}`);
 
         if (!res.ok) {
           throw new Error("Error al cargar el post completo");
@@ -40,7 +40,7 @@ const Post = ({ post, onExchangeSuccess }) => {
     if (!newComment.trim()) return;
 
     try {
-      const response = await fetch("http://localhost:3000/comments", {
+      const response = await fetch("http://localhost:5000/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
