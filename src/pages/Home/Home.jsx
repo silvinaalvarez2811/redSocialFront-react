@@ -11,7 +11,7 @@ const Home = () => {
 
   const obtenerPosts = async () => {
     try {
-      const respPost = await fetch("http://localhost:3000/posts");
+      const respPost = await fetch("http://localhost:5000/posts");
       const dataPost = await respPost.json();
 
       const filteredPost = await dataPost.filter(

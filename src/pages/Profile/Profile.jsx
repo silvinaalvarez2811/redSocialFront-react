@@ -14,7 +14,7 @@ const Profile = () => {
     const fetchPost = async () => {
       try {
         const postsResponse = await fetch(
-          `http://localhost:3001/posts?userId=${user.id}`
+          `/posts?userId=${user.id}`
         );
         if (!postsResponse.ok) {
           throw new Error("Error al obtener las publicaciones del usuario");
@@ -27,12 +27,12 @@ const Profile = () => {
         for (const post of postData) {
           //obtener imagenes - si no hay devuelve un arrray vacio
           const imgResponse = await fetch(
-            `http://localhost:3001/postimages/post/${post.id}`
+            `/postimages/post/${post.id}`
           );
           const imagesData = imgResponse.ok ? await imgResponse.json() : [];
 
           const commentResponse = await fetch(
-            `http://localhost:3001/comments/post/${post.id}`
+            `/comments/post/${post.id}`
           );
           const commentData = commentResponse.ok
             ? await commentResponse.json()
