@@ -44,9 +44,12 @@ const NewPost = () => {
     image.forEach((file) => {
       formData.append("images", file);
     });
-
-    try {   
-      const response = await fetch("http://localhost:3000/posts", {
+    //para ver que datos entran
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+    try {
+      const response = await fetch("/posts", {
         method: "POST",
         body: formData,
       });

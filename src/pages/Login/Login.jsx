@@ -18,9 +18,9 @@ const Login = () => {
     evento.preventDefault();
     setError("");
     try {
-      const responseUser = await fetch(`http://localhost:3000/users/user?username=${userName}`)
-      const usuarioEncontrado = await responseUser.json()
-      const validation = await fetch(`http://localhost:3000/login`, {
+      const responseUser = await fetch(`/users/user?username=${userName}`);
+      const usuarioEncontrado = await responseUser.json();
+      const validation = await fetch(`/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userName, password }),
@@ -35,7 +35,7 @@ const Login = () => {
         setError("Contraseña incorrecta");
         return;
       }
-      
+
       login(usuarioEncontrado);
       navigate("/home");
     } catch (error) {

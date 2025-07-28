@@ -9,6 +9,7 @@ export default defineConfig({
       "/posts": "http://localhost:5000",
       "/comments": "http://localhost:5000",
       "/postimages": "http://localhost:5000",
+      "/login": "http://localhost:5000",
     },
   },
 });
