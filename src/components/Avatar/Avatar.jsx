@@ -1,6 +1,9 @@
+import { useState } from "react";
 import styles from "./Avatar.module.css";
 
 const Avatar = ({ user, extraClass = "" }) => {
+  const [avatar, setAvatar] = useState(user?.avatar ? user.avatar : "");
+
   const getInitials = (name) => {
     if (!name) {
       return "";
@@ -22,7 +25,7 @@ const Avatar = ({ user, extraClass = "" }) => {
     <img
       src={`http://localhost:5000${user.avatar}`}
       alt="Avatar"
-      className={`${styles.avatarImage}`}
+      className={`${styles.avatarImage} ${styles[extraClass]}`}
       width={300}
       height={300}
     />

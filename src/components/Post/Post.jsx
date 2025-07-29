@@ -19,7 +19,7 @@ const Post = ({ post, onExchangeSuccess }) => {
   useEffect(() => {
     const fetchPostComplete = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/posts/full/${post._id}`);
+        const res = await fetch(`http://localhost:3000/posts/full/${post._id}`);
 
         if (!res.ok) {
           throw new Error("Error al cargar el post completo");
