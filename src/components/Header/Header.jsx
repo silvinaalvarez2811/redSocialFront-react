@@ -4,6 +4,7 @@ import { UserContext } from "../../context/UserContext";
 import styles from "./Header.module.css";
 import { TbLogout } from "react-icons/tb";
 import { AiFillHome } from "react-icons/ai";
+import { GoGear } from "react-icons/go";
 import Avatar from "../Avatar/Avatar";
 
 const Header = () => {
@@ -59,7 +60,7 @@ const Header = () => {
               isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
             }
           >
-            Configuration
+            <GoGear size={24}/>
           </NavLink>
         </div>
         {user ? (

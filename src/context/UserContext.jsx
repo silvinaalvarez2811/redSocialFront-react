@@ -9,25 +9,43 @@ export const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
+  const saveUser = (userObj) => {
+    setUser(userObj);
+    localStorage.setItem("usuario", JSON.stringify(userObj));
+  }
+
+  // fetch para recargar el usuario
+  const fetchUser = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:5000/users/${id}/full`);
+      const data = await response.json();
+      saveUser(data);
+    } catch(err) {  
+      console.error("Error al obtener el usuario:", err);
+    }
+  }
+
   useEffect(() => {
     const storedUser = localStorage.getItem("usuario");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
   //funcion para logear -  guarda en useState y en localstorage
   const login = (userObj) => {
-    setUser(userObj);
-    localStorage.setItem("usuario", JSON.stringify(userObj));
+    saveUser(userObj);
   };
+
   //limpia el estado y el localstorage
   const logout = () => {
     setUser(null);
     localStorage.removeItem("usuario");
   };
+  
   //esto es lo que todos los componentes van a poder obtener
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, reloadUser: fetchUser}}>
       {children}
     </UserContext.Provider>
   );
