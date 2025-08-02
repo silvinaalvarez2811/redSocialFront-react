@@ -11,8 +11,9 @@ const Home = () => {
 
   const obtenerPosts = async () => {
     try {
-      const respPost = await fetch("/posts");
+      const respPost = await fetch("/posts/full");
       const dataPost = await respPost.json();
+      console.log("POSTS COMPLETOS", dataPost);
 
       const filteredPost = await dataPost.filter(
         (post) => post.status !== "completed"
@@ -48,9 +49,13 @@ const Home = () => {
           ) : (
             <div className={styles.row}>
               {posts.map((post) => (
-                <div key={post._id} className={styles.rowPost}>
+                <Link
+                  key={post._id}
+                  to={`/post/${post._id}`}
+                  className={styles.rowPost}
+                >
                   <Post post={post} onExchangeSuccess={obtenerPosts} />
-                </div>
+                </Link>
               ))}
             </div>
           )}

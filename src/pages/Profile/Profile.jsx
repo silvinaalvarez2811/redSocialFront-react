@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
+import Post from "../../components/Post/Post";
 
 const Profile = () => {
   const { user } = useContext(UserContext);
@@ -12,7 +13,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const postsResponse = await fetch(`/posts?userId=${user.id}`);
+        const postsResponse = await fetch(`/posts/${user._id}`);
         if (!postsResponse.ok) {
           throw new Error("Error al obtener las publicaciones del usuario");
         }

@@ -66,11 +66,16 @@ button.primary:hover {
 
 /*color de todos los dots del carrousel*/
 .slick-dots li button:before {
-  color: #e0e0e0 !important;
+  color: #423f3f !important;
   opacity: 1;
 }
 
 /*color del boton activo*/
 .slick-dots li.slick-active button:before {
-  color: white !important;
+  color: rgb(95, 91, 91) !important;
+}
+/*flechas del slider*/
+.slick-prev::before,
+.slick-next::before {
+  color: gray !important;
 }
