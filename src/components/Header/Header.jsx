@@ -1,19 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import styles from "./Header.module.css";
 import { TbLogout } from "react-icons/tb";
 import { AiFillHome } from "react-icons/ai";
 import Avatar from "../Avatar/Avatar";
+import NotificationPanel from "../NotificationPanel/NotificationPanel";
+import { FaRegBell } from "react-icons/fa";
 
 const Header = () => {
   const { user, logout } = useContext(UserContext);
   const navigate = useNavigate();
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
+
+  const handleToggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  }
 
   return (
     <header className={styles.header}>
@@ -53,7 +60,12 @@ const Header = () => {
           >
             Sobre Nosotros
           </NavLink>
+          <div className="notif-section">
+            <button className={styles.bellNotif} onClick={handleToggleNotifications}><FaRegBell /></button>
+            {(user && showNotifications) && <NotificationPanel user={user} onClose={() => setShowNotifications(false)}/>}
+          </div>
         </div>
+        
         {user ? (
           <div className={styles.navText}>
             <span className={styles.hideOnMobile}>Hola, {user.userName}</span>

@@ -18,7 +18,7 @@ const Post = ({ post, onExchangeSuccess }) => {
   useEffect(() => {
     const fetchPostComplete = async () => {
       try {
-        const res = await fetch(`/posts/full/${post._id}`);
+        const res = await fetch(`http://localhost:5000/posts/full/${post._id}`);
 
         if (!res.ok) {
           throw new Error("Error al cargar el post completo");
@@ -39,7 +39,7 @@ const Post = ({ post, onExchangeSuccess }) => {
     if (!newComment.trim()) return;
 
     try {
-      const response = await fetch("/comments", {
+      const response = await fetch("http://localhost:5000/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -76,7 +76,7 @@ const Post = ({ post, onExchangeSuccess }) => {
 
   const handleRequestExchange = async () => {
     try {
-      const response = await fetch("/posts/requestExchange", {
+      const response = await fetch("http://localhost:5000/posts/requestExchange", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

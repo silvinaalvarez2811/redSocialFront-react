@@ -8,9 +8,11 @@ import PostDetail from "./pages/PostDetail/PostDetail";
 import RutaProtegida from "./components/RutaProtegida";
 import Header from "./components/Header/Header";
 import UserHistory from "./pages/UserHistory/UserHistory";
+import RequestedPost from "./pages/RequestedPost/RequestedPost.jsx"
 import Footer from "./components/Footer/Footer";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import styles from "./App.module.css";
+import { Toaster } from 'sonner'
 
 function App() {
   const location = useLocation();
@@ -19,6 +21,8 @@ function App() {
   const rutasSinFooter = ["/login", "/register"];
 
   return (
+  <>
+    <Toaster position='top-right' />
     <div className={styles.appContainer}>
       {!rutasSinHeader.includes(path) && <Header />}
 
@@ -78,12 +82,22 @@ function App() {
               </RutaProtegida>
             }
           />
+            <Route
+              path="/request/:postId/:userId"
+              element={
+                <RutaProtegida>
+                  <RequestedPost />
+                </RutaProtegida>
+              }
+            />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
       {!rutasSinFooter.includes(path) && <Footer />}
     </div>
+  </>
+    
   );
 }
 
