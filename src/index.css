@@ -19,6 +19,8 @@
   --color-anaranjado-1: #d95d39;
   --color-rojo-2: #c94e4e;
 
+  color-scheme: dark; /* Color predeterminado de la página */
+
   /* Uso general */
   --color-fondo: var(--color-gris-claro);
   --color-fondo-2: var(--color-gris-oscuro-1);

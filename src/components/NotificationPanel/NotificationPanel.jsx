@@ -1,39 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "../Avatar/Avatar";
-import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
-import { toast } from 'sonner'
 
-const NotificationPanel = ({ user, onClose }) => {
-    const [notif, setNotif] = useState([]);
+const NotificationPanel = ({ notifs, onClose }) => {
     const panelRef = useRef(); 
-
-    useEffect(() => {
-        const data = async () => {
-            try {
-                const response = await fetch(`http://localhost:5000/users/${user._id}/notifications`);
-                const notifData = await response.json();
-                setNotif(notifData.notifications);
-            } catch (error) {
-                console.error("Error al obtener las notificaciones",error)
-            }
-        }
-        data();
-
-        const socket = io('/', {
-            query: { userId: user._id }  // Se conecta el socket con el userId (necesario en el backend)
-        });
-
-        socket.on('new notification', notf => {
-            setNotif((prev) => [...prev, notf]);
-            toast.success("Tienes una nueva notificación", {description: `de ${notf.from.userName}`});
-        });
-
-        return () => {
-            socket.disconnect();
-        };
-    }, [user._id]);
-
 
     // Detectar clic fuera del panel para cerrarlo
     useEffect(() => {
@@ -52,9 +22,9 @@ const NotificationPanel = ({ user, onClose }) => {
     return (
         <div ref={panelRef} className="flex w-96 absolute top-16 bg-zinc-900 text-slate-300 flex-col shadow-xl h-96 p-3 rounded-lg">
             <h2 className="pt-2 text-xl pl-2">Notificaciones</h2>
-            {notif?.length > 0 && (
+            {notifs?.length > 0 && (
                 <div className="mt-2 overflow-auto">{
-                    notif.map((notf, index) => (
+                    notifs.map((notf, index) => (
                         <Link key={index} to={`/request/${notf.postId._id}/${notf.from._id}`}>
                             <div className="flex items-center my-3">
                                 <div className="self-start"><Avatar user={notf.from}/></div>
