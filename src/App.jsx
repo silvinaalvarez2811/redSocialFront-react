@@ -4,6 +4,7 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Profile from "./pages/Profile/Profile";
 import NewPost from "./pages/NewPost/NewPost";
+import PostDetail from "./pages/PostDetail/PostDetail";
 import RutaProtegida from "./components/RutaProtegida";
 import Header from "./components/Header/Header";
 import UserHistory from "./pages/UserHistory/UserHistory";
@@ -44,6 +45,15 @@ function App() {
               </RutaProtegida>
             }
           />
+          <Route
+            path="/post/:postId"
+            element={
+              <RutaProtegida>
+                <PostDetail />
+              </RutaProtegida>
+            }
+          />
+
           <Route
             path="/newPost"
             element={

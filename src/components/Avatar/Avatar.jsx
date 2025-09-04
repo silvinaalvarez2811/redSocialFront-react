@@ -30,7 +30,9 @@ const Avatar = ({ user, extraClass = "" }) => {
       height={300}
     />
   ) : (
-    <div className={`${styles.avatarInitials} ${styles[extraClass]}`}>{initials}</div>
+    <div className={`${styles.avatarInitials} ${styles[extraClass]}`}>
+      {initials}
+    </div>
   );
 };
 

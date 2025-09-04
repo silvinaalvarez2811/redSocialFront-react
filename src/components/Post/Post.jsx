@@ -1,6 +1,5 @@
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
 import { useContext, useEffect, useState } from "react";
 import styles from "./Post.module.css";
 import Avatar from "../Avatar/Avatar";
@@ -19,7 +18,7 @@ const Post = ({ post, onExchangeSuccess }) => {
   useEffect(() => {
     const fetchPostComplete = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/posts/full/${post._id}`);
+        const res = await fetch(`/posts/full/${post._id}`);
 
         if (!res.ok) {
           throw new Error("Error al cargar el post completo");
@@ -40,7 +39,7 @@ const Post = ({ post, onExchangeSuccess }) => {
     if (!newComment.trim()) return;
 
     try {
-      const response = await fetch("http://localhost:5000/comments", {
+      const response = await fetch("/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -125,7 +124,7 @@ const Post = ({ post, onExchangeSuccess }) => {
           {postComplete.images.map((imagen, index) => (
             <div key={index} className={styles.cardImage}>
               <img
-                src={BACKEND_URL + imagen.imageUrl}
+                src={`${BACKEND_URL}${imagen.imageUrl}`}
                 className="card-img-top mb-2"
                 alt={`Imagen ${index + 1}`}
               />
