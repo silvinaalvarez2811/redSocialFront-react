@@ -1,12 +1,12 @@
 import Slider from "react-slick";
-
 import { FaCommentDots } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
-import Post from "../../components/Post/Post";
 import Avatar from "../../components/Avatar/Avatar";
 import { Card, ListGroup, Button, Row, Col, Badge } from "react-bootstrap";
+import { toast } from 'sonner'
+
 
 const PostDetail = () => {
   /* const { id } = useParams();*/
@@ -18,13 +18,15 @@ const PostDetail = () => {
   const [error, setError] = useState("");
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [showAll, setShowAll] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
 
-        const postResponse = await fetch(`/posts/full/${postId}`);
+        const postResponse = await fetch(`http://localhost:5000/posts/full/${postId}`);
         if (!postResponse.ok) {
           throw new Error("Error al cargar la publicacion");
         }
@@ -41,6 +43,30 @@ const PostDetail = () => {
     fetchData();
   }, [postId]);
 
+  const handleIntercambio = async () => {
+    // Cambio los estilos del botón
+    if (!user || !user._id) {
+      setError("Debes iniciar seción para intercambiar");
+    }
+    setIsDisabled(true);
+    // Toast para la notificación 
+    toast.success("Notificación enviada", {description: `para ${post.userId.userName}`});
+    
+    try {
+      await fetch(`http://localhost:5000/users/requestExchangeFor/${post.userId._id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          postId: post._id,
+          from: user._id,
+          date: Date(),
+        }),
+      });
+    } catch (error) {
+      console.error("Error al enviar la solicitud", error);
+    }
+  };
+
   const createComment = async (evento) => {
     evento.preventDefault();
     if (!newComment.trim()) return;
@@ -48,7 +74,7 @@ const PostDetail = () => {
       setError("Debes iniciar seción para comentar");
     }
     try {
-      const response = await fetch("/comments", {
+      const response = await fetch("http://localhost:5000/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -65,7 +91,7 @@ const PostDetail = () => {
       setComments([...comments, createComment]);
       setNewComment("");
     } catch (error) {
-      setError("No se pudo agregar el comentario");
+      setError("No se pudo agregar el comentario", error);
     }
   };
   if (loading) return <p>Cargando publicación...</p>;
@@ -106,7 +132,7 @@ const PostDetail = () => {
                   {post.images.map((img, idx) => (
                     <div key={idx} className="d-flex justify-content-center">
                       <img
-                        src={`http://localhost:5000${img.imageUrl}`}
+                        src={`http://localhost:5000/${img.imageUrl}`}
                         alt={`Imagen ${idx + 1}`}
                         className="img-fluid rounded shadow-sm"
                         style={{
@@ -221,12 +247,7 @@ const PostDetail = () => {
 
               {/* Botón de intercambio */}
               <div className="text-center mt-3">
-                <Button
-                  variant="warning"
-                  onClick={() => navigate("/intercambio")}
-                >
-                  Solicitar Intercambio
-                </Button>
+                  <Button variant="warning" disabled={isDisabled} onClick={handleIntercambio}>Solicitar intercambio</Button>
               </div>
             </Card.Body>
           </Col>

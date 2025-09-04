@@ -78,6 +78,15 @@
   opacity: 0.8;
 }
 
+.bellNotif {
+  color: white;
+  transform: scale(1.3);
+}
+
+.bellNotif:hover {
+  transform: scale(1.5);
+}
+
 @media (max-width: 1024px) {
   .hideOnMobile {
     display: none !important;

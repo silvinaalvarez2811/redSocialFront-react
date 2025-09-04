@@ -10,6 +10,10 @@ export default defineConfig({
       "/comments": "http://localhost:5000",
       "/postimages": "http://localhost:5000",
       "/login": "http://localhost:5000",
+      "/socket.io": {  // Socket.io esta en el mismo dominio
+        target: "http://localhost:5000",
+        ws: true
+      }
     },
   },
 });
