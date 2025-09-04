@@ -20,6 +20,7 @@ const PostDetail = () => {
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,15 +49,12 @@ const PostDetail = () => {
     if (!user || !user._id) {
       setError("Debes iniciar seción para intercambiar");
     }
-    const btn = document.getElementById("btn-exchange");
-    btn.classList.remove("bg-amber-400");
-    btn.classList.remove("hover:bg-yellow-500");
-    btn.classList.add("bg-slate-400");
+    setIsDisabled(true);
     // Toast para la notificación 
     toast.success("Notificación enviada", {description: `para ${post.userId.userName}`});
     
     try {
-      await fetch(`http://localhost:5000/users/notify/${post.userId._id}`, {
+      await fetch(`http://localhost:5000/users/requestExchangeFor/${post.userId._id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -250,9 +248,7 @@ const PostDetail = () => {
 
               {/* Botón de intercambio */}
               <div className="text-center mt-3">
-                <button id="btn-exchange" className="bg-amber-400 rounded-xl py-2 px-3 hover:bg-yellow-500" onClick={() => handleIntercambio()}>
-                  Solicitar Intercambio
-                </button>
+                  <Button variant="warning" disabled={isDisabled} onClick={handleIntercambio}>Solicitar intercambio</Button>
               </div>
             </Card.Body>
           </Col>

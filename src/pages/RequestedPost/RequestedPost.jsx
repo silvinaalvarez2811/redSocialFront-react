@@ -4,23 +4,58 @@ import Slider from "react-slick";
 import { Card, ListGroup, Row, Col, Badge } from "react-bootstrap";
 import { FaCommentDots } from "react-icons/fa";
 import Avatar from "../../components/Avatar/Avatar.jsx";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 const RequestedPost = () => {
     const [post, setPost] = useState(null);
     const { postId, userId } = useParams();
+    const [comment, setComment] = useState(null);
+    const [exchanged, setExchanged] = useState(false);
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
-        const fetchData = async () => {
+      const fetchComment = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/comments/${postId}/${userId}`);
+                const data = await response.json();
+                setComment(data);
+            } catch(error) {
+                console.error("Ocurrió un error al obtener los comentarios", error);
+            }
+        }
+        fetchComment();
+    }, [postId, userId]);
+
+    useEffect(() => {
+        const fetchPost = async () => {
             try {
                 const response = await fetch(`http://localhost:5000/users/alertof/${postId}/${userId}`);
                 const data = await response.json();
                 setPost(data);
             } catch(error) {
-                console.error("Ocurrió un error al obtener los datos de la solicitud", error);
+                console.error("Ocurrió un error al obtener los datos del post", error);
             }
         }
-        fetchData();
+        fetchPost();
     }, [postId, userId]);
+
+  const handleAcceptRequest = async () => {
+    setShow(true);
+    try {
+      await fetch(`http://localhost:5000/posts/confirmExchange`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          postId, 
+          exchangedWithId: userId, 
+        }),
+      });
+    } catch (error) {
+      console.error("Ocurrió un error al aceptar el intercambio", error);
+    }
+    setExchanged(true);
+  };
 
     return (
         <div className="py-16 mt-20  w-2/3 h-fit flex flex-col items-center">
@@ -112,28 +147,34 @@ const RequestedPost = () => {
                   ))}
                 </ListGroup>
 
-                {post?.comments?.length > 0 ? 
-                  <div className="text-end mb-3">
+                {comment && post?.comments.length > 0 ? 
+                  (<div className="text-end mb-3">
                       <div className="w-80 flex items-center text-sm">
                           <Avatar user={post?.requestedBy._id}/>
                           <p className="m-0">
                             <span className="font-semibold">{post?.requestedBy.userName}</span> 
-                            {post.comments.text}</p>
+                            {comment.text}</p>
                       </div>
                       
-                  </div>
-                 : <p className="text-orange-300">No hay comentarios de la persona</p>
+                  </div>)
+                 : <p className="text-slate-300">No hay comentarios de la persona</p>
                 } 
 
-                <div className="flex justify-center gap-4 pt-4">
-                  <button className="rounded-xl bg-slate-300 p-2 w-28 hover:shadow-lg">Rechazar</button>
-                  <button className="rounded-xl bg-slate-300 p-2 w-28 hover:shadow-lg">Aceptar</button>
+                <div className="flex justify-center items-end gap-4 pt-4 h-20">
+                  <Button variant="outline-danger">Rechazar</Button>
+                  <Button variant="warning" disabled={exchanged} onClick={handleAcceptRequest}>Aceptar</Button>
                 </div>
               </Card.Body>
             </Col>
           </Row>
       </Card>
-            <div></div>
+        <Modal show={show} onHide={() => setShow(false)} animation={false}>
+            <Modal.Header closeButton className="bg-slate-200 text-slate-800">
+              <Modal.Title>Exitoso</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="bg-slate-200 text-red-700 font-semibold">¡El intercambio ha sido realizado!</Modal.Body>
+            <Modal.Footer className="bg-slate-200 text-slate-800"></Modal.Footer>
+          </Modal>
         </div>
 
     );
