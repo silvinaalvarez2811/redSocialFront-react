@@ -4,6 +4,7 @@ import { UserContext } from "../../context/UserContext";
 import styles from "./Header.module.css";
 import { TbLogout } from "react-icons/tb";
 import { AiFillHome } from "react-icons/ai";
+import { GoGear } from "react-icons/go";
 import Avatar from "../Avatar/Avatar";
 
 const Header = () => {
@@ -52,6 +53,14 @@ const Header = () => {
             }
           >
             Sobre Nosotros
+          </NavLink>
+          <NavLink
+            to="/edit-profile"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            <GoGear size={24}/>
           </NavLink>
         </div>
         {user ? (

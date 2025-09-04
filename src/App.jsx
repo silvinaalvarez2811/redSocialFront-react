@@ -4,12 +4,14 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Profile from "./pages/Profile/Profile";
 import NewPost from "./pages/NewPost/NewPost";
+import PostDetail from "./pages/PostDetail/PostDetail";
 import RutaProtegida from "./components/RutaProtegida";
 import Header from "./components/Header/Header";
 import UserHistory from "./pages/UserHistory/UserHistory";
 import Footer from "./components/Footer/Footer";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import styles from "./App.module.css";
+import EditProfile from './pages/EditProfile/EditProfile';
 
 function App() {
   const location = useLocation();
@@ -44,6 +46,15 @@ function App() {
             }
           />
           <Route
+            path="/post/:postId"
+            element={
+              <RutaProtegida>
+                <PostDetail />
+              </RutaProtegida>
+            }
+          />
+
+          <Route
             path="/newPost"
             element={
               <RutaProtegida>
@@ -65,6 +76,14 @@ function App() {
             element={
               <RutaProtegida>
                 <UserHistory />
+              </RutaProtegida>
+            }
+          />
+          <Route
+            path="edit-profile"
+            element={
+              <RutaProtegida>
+                <EditProfile />
               </RutaProtegida>
             }
           />

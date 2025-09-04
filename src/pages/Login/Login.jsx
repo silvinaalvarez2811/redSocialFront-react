@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import styles from "./Login.module.css";
@@ -9,7 +9,7 @@ const Login = () => {
   const [userName, setuserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [currentIndex, setCurrentIndex] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useContext(UserContext);
   const navigate = useNavigate();
@@ -18,9 +18,9 @@ const Login = () => {
     evento.preventDefault();
     setError("");
     try {
-      const responseUser = await fetch(`http://localhost:5000/users/user?username=${userName}`)
-      const usuarioEncontrado = await responseUser.json()
-      const validation = await fetch(`http://localhost:5000/login`, {
+      const responseUser = await fetch(`/users/user?username=${userName}`);
+      const usuarioEncontrado = await responseUser.json();
+      const validation = await fetch(`/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userName, password }),
@@ -35,7 +35,7 @@ const Login = () => {
         setError("Contraseña incorrecta");
         return;
       }
-      
+
       login(usuarioEncontrado);
       navigate("/home");
     } catch (error) {

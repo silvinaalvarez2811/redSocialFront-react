@@ -21,11 +21,10 @@ const Register = () => {
 
     try {
       // get de users - trae todos
-      const getUsers = await fetch(`http://localhost:5000/users`);
+
+      const getUsers = await fetch(`/users`);
       const usuarios = await getUsers.json();
-      //se busca si hay alguno igual al que se quiere registrar
-      console.log(usuarios)
-      console.log(userName)
+
       const existsUserName = usuarios.find(
         (user) => user.userName === userName
       );
@@ -34,10 +33,17 @@ const Register = () => {
         return;
       }
       //si no existe, se registra
-      const response = await fetch(`http://localhost:5000/users`, {
+      const response = await fetch(`/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userName, email, password, firstName, lastName, location }),
+        body: JSON.stringify({
+          userName,
+          email,
+          password,
+          firstName,
+          lastName,
+          location,
+        }),
       });
 
       if (!response.ok) {
@@ -64,7 +70,7 @@ const Register = () => {
           <h2 className="text-2xl font-bold mb-6 text-center">Registro</h2>
           <p>Registrate para ver fotos de tus amigos</p>
           <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          <label htmlFor="username">Nombre de usuario</label>
+            <label htmlFor="username">Nombre de usuario</label>
             <input
               id="username"
               type="text"
@@ -74,7 +80,7 @@ const Register = () => {
               required
               className="p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          <label htmlFor="password">Contraseña</label>
+            <label htmlFor="password">Contraseña</label>
             <input
               id="password"
               type="text"
@@ -83,10 +89,14 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               className="p-3 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$"
-            />  
-          <label htmlFor="password" className="text-gray-400 text-sm mb-4">La contraseña debe contener por lo menos <b>8 caracteres</b> incluyendo un <b>número</b>, una <b>letra minúscula</b> y <b>mayúscula</b></label>
-          <label htmlFor="email">Email</label>
+              pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$"
+            />
+            <label htmlFor="password" className="text-gray-400 text-sm mb-4">
+              La contraseña debe contener por lo menos <b>8 caracteres</b>{" "}
+              incluyendo un <b>número</b>, una <b>letra minúscula</b> y{" "}
+              <b>mayúscula</b>
+            </label>
+            <label htmlFor="email">Email</label>
             <input
               id="email"
               type="email"
@@ -96,7 +106,7 @@ const Register = () => {
               required
               className="p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          <label htmlFor="firstName">Nombre</label>
+            <label htmlFor="firstName">Nombre</label>
             <input
               id="firstName"
               type="text"
@@ -106,7 +116,7 @@ const Register = () => {
               required
               className="p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          <label htmlFor="lastName">Apellido</label>
+            <label htmlFor="lastName">Apellido</label>
             <input
               id="lastName"
               type="text"
@@ -116,7 +126,7 @@ const Register = () => {
               required
               className="p-3 mb-4 rounded bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          <label htmlFor="location">Ubicación</label>
+            <label htmlFor="location">Ubicación</label>
             <input
               id="location"
               type="text"
