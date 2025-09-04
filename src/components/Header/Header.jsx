@@ -23,7 +23,7 @@ const Header = () => {
     if(user) {
       const data = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/users/${user._id}/notifications`);
+          const response = await fetch(`http://localhost:5000/users/${user._id}/notifications`);
           const notifData = await response.json();
           setNotifs(notifData.notifications);
         } catch (error) {

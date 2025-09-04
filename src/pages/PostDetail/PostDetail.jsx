@@ -53,7 +53,7 @@ const PostDetail = () => {
     toast.success("Notificación enviada", {description: `para ${post.userId.userName}`});
     
     try {
-      await fetch(`http://localhost:5000/users/requestExchangeFor/${post.userId._id}`, {
+      await fetch(`http://localhost:5000/posts/requestExchangeFor/${post.userId._id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
