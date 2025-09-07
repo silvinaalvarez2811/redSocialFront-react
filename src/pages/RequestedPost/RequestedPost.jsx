@@ -6,6 +6,7 @@ import { FaCommentDots } from "react-icons/fa";
 import Avatar from "../../components/Avatar/Avatar.jsx";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const RequestedPost = () => {
     const [post, setPost] = useState(null);
@@ -93,7 +94,7 @@ const RequestedPost = () => {
                     {post.images.map((img, idx) => (
                       <div key={idx} className="d-flex justify-content-center">
                         <img
-                          src={`http://localhost:5000${img.imageUrl}`}
+                          src={`${BACKEND_URL}${img.imageUrl}`}
                           alt={`Imagen ${idx + 1}`}
                           className="img-fluid rounded shadow-sm"
                           style={{

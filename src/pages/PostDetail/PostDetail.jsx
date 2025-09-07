@@ -6,7 +6,7 @@ import { UserContext } from "../../context/UserContext";
 import Avatar from "../../components/Avatar/Avatar";
 import { Card, ListGroup, Button, Row, Col, Badge } from "react-bootstrap";
 import { toast } from 'sonner'
-
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 const PostDetail = () => {
   /* const { id } = useParams();*/
@@ -53,7 +53,7 @@ const PostDetail = () => {
     toast.success("Notificación enviada", {description: `para ${post.userId.userName}`});
     
     try {
-      await fetch(`http://localhost:5000/posts/requestExchangeFor/${post.userId._id}`, {
+      await fetch(`/posts/requestExchangeFor/${post.userId._id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -132,7 +132,7 @@ const PostDetail = () => {
                   {post.images.map((img, idx) => (
                     <div key={idx} className="d-flex justify-content-center">
                       <img
-                        src={`http://localhost:5000/${img.imageUrl}`}
+                        src={`${BACKEND_URL}${img.imageUrl}`}
                         alt={`Imagen ${idx + 1}`}
                         className="img-fluid rounded shadow-sm"
                         style={{
