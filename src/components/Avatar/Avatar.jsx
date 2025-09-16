@@ -1,37 +1,36 @@
-import { useState } from "react";
-import styles from "./Avatar.module.css";
+const Avatar = ({ user, showUsername = false, extraClass = "" }) => {
+  if (!user) return null;
 
-const Avatar = ({ user, extraClass = "" }) => {
-  const [avatar, setAvatar] = useState(user?.avatar ? user.avatar : "");
-
-  const getInitials = (name) => {
-    if (!name) {
-      return "";
-    }
-    // elimina espacios y divide en palabras (no caracteres)
-    const nombres = name.trim().split(" ");
-    if (nombres.length === 1) {
-      // devuelve la primera letra en mayúscula
-      return nombres[0][0].toUpperCase();
-    } else {
-      // devuelve la primera letra de la primera y segunda palabra
-      return (nombres[0][0] + nombres[1][0]).toUpperCase();
-    }
+  const getInitials = (firstName, lastName) => {
+    const firstInitial = firstName ? firstName[0].toUpperCase() : "";
+    const lastInitial = lastName ? lastName[0].toUpperCase() : "";
+    return firstInitial + lastInitial;
   };
 
-  const initials = getInitials(user?.userName);
+  const initials = getInitials(user.firstName, user.lastName);
 
-  return user?.avatar ? (
-    <img
-      src={`http://localhost:5000${user.avatar}`}
-      alt="Avatar"
-      className={`${styles.avatarImage} ${styles[extraClass]}`}
-      width={300}
-      height={300}
-    />
-  ) : (
-    <div className={`${styles.avatarInitials} ${styles[extraClass]}`}>
-      {initials}
+  const baseClasses =
+    "rounded-full flex items-center justify-center font-bold text-sm";
+
+  return (
+    <div className={`flex items-center gap-2 p-0`}>
+      {user.avatar ? (
+        <img
+          src={`http://localhost:5000${user.avatar}`}
+          alt="Avatar"
+          className={`${baseClasses} w-10 h-10 ${extraClass}`}
+        />
+      ) : (
+        <div className={`${baseClasses} w-10 h-10 ${extraClass}`}>
+          {initials}
+        </div>
+      )}
+
+      {showUsername && (
+        <span className="font-bold text-fondo-claro uppercase">
+          {user.userName || `${user.firstName} ${user.lastName}`}
+        </span>
+      )}
     </div>
   );
 };

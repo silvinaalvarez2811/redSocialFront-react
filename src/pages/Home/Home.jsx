@@ -1,9 +1,8 @@
 import React from "react";
-import styles from "./Home.module.css";
 import { useEffect, useState } from "react";
-import Post from "../../components/Post/Post";
 import { Link } from "react-router-dom";
 import { MdOutlinePostAdd } from "react-icons/md";
+import PostModular from "../../components/Post/PostModular";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -13,7 +12,6 @@ const Home = () => {
     try {
       const respPost = await fetch("/posts/full");
       const dataPost = await respPost.json();
-      console.log("POSTS COMPLETOS", dataPost);
 
       const filteredPost = await dataPost.filter(
         (post) => post.status !== "completed"
@@ -31,38 +29,40 @@ const Home = () => {
   }, []);
 
   return (
-    <div className={styles.page}>
-      <div className={styles.layout}>
-        <section className={styles.mainContent}>
-          <div className={styles.createPost}>
-            <Link to="/newPost" className={styles.navigate}>
-              <MdOutlinePostAdd size={25} /> ¿Qué querés intercambiar?
-            </Link>
-          </div>
+    <div className="min-h-screen bg-gray-50 p-4">
+      <div className="max-w-6xl mx-auto">
+        {/* Crear nuevo post */}
+        <div className="mb-6">
+          <Link
+            to="/newPost"
+            className="flex justify-center items-center w-1/2 mt-20 gap-2 p-4 bg-white rounded-lg shadow hover:shadow-md transition"
+          >
+            <MdOutlinePostAdd size={25} />
+            <span>¿Qué querés intercambiar?</span>
+          </Link>
+        </div>
 
-          {cargando ? (
-            <p className={styles.textCenter}>Cargando publicaciones...</p>
-          ) : posts.length === 0 ? (
-            <p className={styles.textCenter}>
-              No hay publicaciones para mostrar
-            </p>
-          ) : (
-            <div className={styles.row}>
-              {posts.map((post) => (
-                <Link
-                  key={post._id}
-                  to={`/post/${post._id}`}
-                  className={styles.rowPost}
-                >
-                  <Post post={post} onExchangeSuccess={obtenerPosts} />
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
+        {/* Cargando */}
+        {cargando ? (
+          <p className="text-center text-gray-700 mt-10">
+            Cargando publicaciones...
+          </p>
+        ) : posts.length === 0 ? (
+          <p className="text-center text-gray-700 mt-10">
+            No hay publicaciones para mostrar
+          </p>
+        ) : (
+          /* Grid de posts */
+          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <Link key={post._id} to={`/post/${post._id}`} className="block">
+                <PostModular post={post} onExchangeSuccess={obtenerPosts} />
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
-
 export default Home;

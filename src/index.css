@@ -9,7 +9,6 @@
   --fuente-secundaria: "Montserrat", sans-serif;
   --fuente-extra: "Lato", sans-serif;
   --fuente-ubuntu: "Ubuntu", sans-serif;
-
   /* Colores principales */
   --color-gris-oscuro-1: #5d5c5c;
   --color-gris-oscuro-2: #2f2f2f;
@@ -28,7 +27,6 @@
   --color-destacado: var(--color-anaranjado-1);
   --color-destacado2: var(--color-rojo-2);
 }
-
 body,
 html {
   font-family: "Montserrat", "Lato", "Nunito", "Ubuntu", sans-serif;
@@ -36,22 +34,6 @@ html {
   padding: 0;
   width: 100%;
   margin: 0;
-}
-
-h1,
-h2,
-h3 {
-  color: var(--color-texto-secundario);
-}
-
-a {
-  color: var(--color-destacado);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--color-alerta);
-  text-decoration: none;
 }
 
 button.primary {
